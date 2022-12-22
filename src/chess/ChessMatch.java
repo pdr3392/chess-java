@@ -6,8 +6,13 @@ import boardgame.Position;
 import chess.pieces.King;
 import chess.pieces.Rook;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChessMatch {
   private final Board board;
+  private final List<Piece> piecesOnTheBoard = new ArrayList<>();
+  private final List<Piece> capturedPieces = new ArrayList<>();
   private Integer turn;
   private Color currentPlayer;
 
@@ -64,6 +69,11 @@ public class ChessMatch {
     Piece capturedPiece = board.removePiece(target);
     board.placePiece(p, target);
 
+    if (capturedPiece != null) {
+      piecesOnTheBoard.remove(capturedPiece);
+      capturedPieces.add(capturedPiece);
+    }
+
     return capturedPiece;
   }
 
@@ -75,7 +85,6 @@ public class ChessMatch {
     if (currentPlayer != ((ChessPiece) board.piece(position)).getColor()) {
       throw new ChessException("The chosen piece is not yours!");
     }
-
 
     if (!board.piece(position).isThereAnyPossibleMove()) {
       throw new ChessException("There is no possible moves for the chosen piece.");
@@ -95,6 +104,7 @@ public class ChessMatch {
 
   private void placeNewPiece(char column, int row, ChessPiece piece) {
     board.placePiece(piece, new ChessPosition(column, row).toPosition());
+    piecesOnTheBoard.add(piece);
   }
 
   private void initialSetup() {
