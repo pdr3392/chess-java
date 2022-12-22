@@ -1,8 +1,9 @@
 package boardgame;
 
 public abstract class Piece {
-  private final Board board;
+
   protected Position position;
+  private final Board board;
 
   public Piece(Board board) {
     this.board = board;
@@ -28,7 +29,6 @@ public abstract class Piece {
         }
       }
     }
-
     return false;
   }
 }
